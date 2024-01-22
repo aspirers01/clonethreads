@@ -16,6 +16,8 @@ sealed class Routes(val routes: String) {
     object AddThreads : Routes("add_threads")
 
     object BottomNav : Routes("bottom_nav")
+    object Login : Routes("login")
+    object Register : Routes("register")
 
 
 }

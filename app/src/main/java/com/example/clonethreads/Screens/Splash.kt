@@ -16,15 +16,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.clonethreads.Navigation.Routes
 import com.example.clonethreads.R
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.delay
 
 @Composable
 fun Splash( navController: NavHostController
 ) {
-
+      val auth= Firebase.auth
 
        ConstraintLayout (modifier = Modifier.fillMaxSize()){
            val  (image)= createRefs()
@@ -40,7 +43,18 @@ fun Splash( navController: NavHostController
 //          Text(text ="Splash Screen")
              LaunchedEffect(key1 = true ){
                  delay(2500)
-                 navController.navigate(Routes.BottomNav.routes)
+                  if(auth.currentUser == null){
+                        navController.navigate(Routes.Login.routes){
+                            popUpTo(navController.graph.findStartDestination().id)
+                            launchSingleTop = true
+                        }
+                  }else{
+                      navController.navigate(Routes.BottomNav.routes){
+                          popUpTo(navController.graph.findStartDestination().id)
+                          launchSingleTop = true
+                      }
+                  }
+
              }
          }
 
