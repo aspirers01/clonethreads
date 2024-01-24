@@ -1,10 +1,13 @@
 package com.example.clonethreads.Screens
 
 
+import android.Manifest
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -74,7 +77,7 @@ fun Register(navController: NavHostController) {
     val viewmodel = AuthViewmodel()
     val firebaseUser by viewmodel.firebaseUser.observeAsState(null)
     val isloading by viewmodel.isloading.observeAsState(false)
-   val error by viewmodel.error.observeAsState(null)
+    val error by viewmodel.error.observeAsState(null)
     var username: String by remember {
         mutableStateOf("")
     }
@@ -94,43 +97,31 @@ fun Register(navController: NavHostController) {
 
     val context = LocalContext.current
     val photopicker = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickVisualMedia(),
-            onResult = { uri ->
-                uri?.let {
-                    imageUri = it
-                }
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            uri?.let {
+                imageUri = it
             }
-        )
+        }
+    )
 
-
-
-    LaunchedEffect(error ){
-        if(error!=null)
-        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
+    LaunchedEffect(error) {
+        if (error != null)
+            Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
     }
 
-     LaunchedEffect(firebaseUser ){
-         Log.d("register","launched effect")
-         if(firebaseUser!=null){
+    LaunchedEffect(firebaseUser) {
+        Log.d("register", "launched effect")
+        if (firebaseUser != null) {
 
-             navController.navigate(Routes.BottomNav.routes){
-                 popUpTo(navController.graph.findStartDestination().id)
-                 launchSingleTop = true
-             }
-         }
-         }
+            navController.navigate(Routes.BottomNav.routes) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
+        }
+    }
 
-//
-//         LaunchedEffect(isloading ){
-//    if(isloading){
-//        Box(modifier = Modifier
-//        .size(width = 50.dp, height = 50.dp)
-//        .background(Color.Transparent),contentAlignment = Alignment.Center) {
-//
-//        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-//    }
-//    } }
-
+    //Todo implement loading screen
 
 
     Column(
@@ -284,9 +275,6 @@ fun Register(navController: NavHostController) {
 
 
 
-
-
-
 fun gotologin(navController: NavHostController) {
     navController.navigate("login") {
         popUpTo(navController.graph.findStartDestination().id)
@@ -296,9 +284,7 @@ fun gotologin(navController: NavHostController) {
 }
 
 
-fun onClick() {
-    TODO("Not yet implemented")
-}
+
 
 @Preview(showBackground = true)
 @Composable
