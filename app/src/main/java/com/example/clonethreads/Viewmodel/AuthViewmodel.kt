@@ -37,7 +37,7 @@ class AuthViewmodel : ViewModel() {
 
     init {
         _firebaseUser.value = auth.currentUser
-//        _isloading.value=false
+        _isloading.value=false
     }
 
     fun login(email: String, password: String, context: Context) {

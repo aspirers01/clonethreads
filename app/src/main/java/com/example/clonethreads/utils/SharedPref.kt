@@ -27,7 +27,7 @@ object SharedPref {
         val pref = context.getSharedPreferences("users",MODE_PRIVATE)
         return pref.getString("email","").toString()
     }
-    fun image(context:Context):String{
+    fun getimage(context:Context):String{
         val pref = context.getSharedPreferences("users",MODE_PRIVATE)
         return pref.getString("image","").toString()
     }
