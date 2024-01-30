@@ -49,7 +49,7 @@ class AddThreadViewModel:ViewModel(){
 
 fun savedata(thread: String, uid: String, toString: String){
         val threadmodel = ThreadModel(thread, uid, toString, System.currentTimeMillis().toString())
-        userref.child(userref.push().key!!).push().setValue(threadmodel).addOnCompleteListener {
+        userref.child(userref.push().key!!).setValue(threadmodel).addOnCompleteListener {
             if (it.isSuccessful) {
                 _isposted.postValue(true)
             } else {
