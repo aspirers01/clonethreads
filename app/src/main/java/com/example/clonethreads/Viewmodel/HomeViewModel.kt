@@ -2,6 +2,7 @@ package com.example.clonethreads.Viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.clonethreads.Models.ThreadModel
 import com.example.clonethreads.Models.UserModel
 import com.google.firebase.database.DataSnapshot
@@ -9,12 +10,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class HomeViewModel {
+class HomeViewModel:ViewModel() {
 
     val db = FirebaseDatabase.getInstance()
     val threadref = db.getReference("threads")
 
-    val _threadNuser = MutableLiveData<List<Pair<ThreadModel, UserModel>>>()
+   private val _threadNuser = MutableLiveData<List<Pair<ThreadModel, UserModel>>>()
     val threadandusers: LiveData<List<Pair<ThreadModel, UserModel>>> = _threadNuser
 
 
