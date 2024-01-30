@@ -33,7 +33,7 @@ fun BottomNav(navController: NavHostController){
         }){innerpadding->
          NavHost(navController = navController1, startDestination = Routes.Home.routes, modifier = Modifier.padding(innerpadding)) {
              composable(Routes.Home.routes) {
-                 Home()
+                 Home(navController1)
              }
              composable(Routes.Search.routes) {
                  Search()
