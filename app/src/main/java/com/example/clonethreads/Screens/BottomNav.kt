@@ -39,7 +39,9 @@ fun BottomNav(navController: NavHostController){
                  Search(navController1)
              }
              composable(Routes.Profile.routes) {
-                 Profile(navController1)
+                 Profile(
+                     navController1
+                 )
              }
              composable(Routes.Notifications.routes) {
                  Notification()
