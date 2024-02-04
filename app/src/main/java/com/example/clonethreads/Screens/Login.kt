@@ -125,20 +125,7 @@ fun Login( navController: NavHostController) {
 
 
         }
-        Box(modifier = Modifier.height(20.dp))
-           Button(onClick = { /*TODO*/ }) {
-                Image(painter = painterResource(id = R.drawable.google), contentDescription = null,)
-               Text(
-                   "Google",
-                   modifier = Modifier
-                       .width(180.dp)
-                       .padding(start = 24.dp, end = 24.dp),
-                   style = TextStyle(
-                       fontSize = 24.sp,
-                       fontWeight = ExtraBold,
-                       textAlign = TextAlign.Center
-                   ))
-           }
+
         Box(modifier = Modifier.height(20.dp))
         TextButton(onClick = { gotoregister(navController) }) {
             Text(text ="New user ? ",modifier = Modifier
