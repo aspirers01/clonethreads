@@ -2,6 +2,7 @@ package com.example.clonethreads.Itemsview
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +26,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.clonethreads.Models.UserModel
+import com.example.clonethreads.Navigation.Routes
 
 @Composable
 fun UserItems(
@@ -36,7 +38,11 @@ fun UserItems(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp).clickable {
+
+                  val routes=  Routes.OtherUser.routes.replace("{data}",User.uid)
+                    navHostController.navigate(routes)
+                }
         ) {
             val (userimage, username) = createRefs()
             Image(

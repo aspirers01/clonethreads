@@ -9,6 +9,7 @@ import com.example.clonethreads.Screens.BottomNav
 import com.example.clonethreads.Screens.Home
 import com.example.clonethreads.Screens.Login
 import com.example.clonethreads.Screens.Notification
+import com.example.clonethreads.Screens.OtherUser
 import com.example.clonethreads.Screens.Profile
 import com.example.clonethreads.Screens.Register
 import com.example.clonethreads.Screens.Search
@@ -46,6 +47,10 @@ fun NavGraph(navHostController: NavHostController
         }
         composable(Routes.Register.routes){
            Register(navHostController)
+        }
+        composable(Routes.OtherUser.routes){
+            val data=it.arguments?.getString("data")
+            OtherUser(navHostController,data!!)
         }
     }
 }

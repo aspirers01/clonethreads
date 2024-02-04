@@ -37,19 +37,18 @@ import com.example.clonethreads.Viewmodel.ProfileViewModel
 import com.example.clonethreads.utils.SharedPref
 
 @Composable
-fun OtherUser(navController: NavHostController, user: UserModel){
-    val viewmodel= AuthViewmodel()
+fun OtherUser(navController: NavHostController,data:String){
 
+//val uid= SharedPref.getusername(LocalContext.current)
     val profilemodel= ProfileViewModel()
     val threads by profilemodel.threads.observeAsState()
-//    profilemodel.getThreads(uid)
+    profilemodel.getThreads(data)
     val context= LocalContext.current
+       val user by profilemodel.user.observeAsState()
+    profilemodel.getuser(data)
 
 
-    val user = UserModel(
-        username = SharedPref.getname(context),
-        image = SharedPref.getimage(context)
-    )
+
 
     LazyColumn {
         item{
@@ -71,7 +70,7 @@ fun OtherUser(navController: NavHostController, user: UserModel){
                     })
 
                 Text(
-                    text = "Username",
+                    text = user?.username?:"",
                     style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.ExtraBold),
                     modifier = Modifier.constrainAs(username) {
                         top.linkTo(profiletext.bottom, margin = 16.dp)
@@ -79,7 +78,7 @@ fun OtherUser(navController: NavHostController, user: UserModel){
                     })
 
                 Image(
-                    painter = rememberAsyncImagePainter(model = SharedPref.getimage(context)),
+                    painter = rememberAsyncImagePainter(model = user?.image?:""),
                     contentDescription = "userimg",
                     modifier = Modifier
                         .size(100.dp)
@@ -118,7 +117,7 @@ fun OtherUser(navController: NavHostController, user: UserModel){
             }
         }
         items(threads?: emptyList()){thread->
-            Threaditems(thread = thread, user = user)
+            Threaditems(thread = thread, user = user!!)
         }
     }
 

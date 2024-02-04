@@ -14,7 +14,7 @@ class ProfileViewModel {
 
     val db=FirebaseDatabase.getInstance()
     val ref=db.getReference("threads")
-
+     val userref=db.getReference("users")
     private val _threads= MutableLiveData(listOf<ThreadModel>())
     val threads: LiveData<List<ThreadModel>> = _threads
       private val _user= MutableLiveData(UserModel())
@@ -45,7 +45,23 @@ class ProfileViewModel {
     }
 
     fun getuser(uid:String){
+          userref.orderByChild("uid").equalTo(uid).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
 
+                for (usersnapshot in snapshot.children) {
+                    val user = usersnapshot.getValue(UserModel::class.java)
+                    user?.let {
+                        _user.postValue(it)
+                    }
+                }
+
+            }
+
+            override fun onCancelled(error: com.google.firebase.database.DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+    })
     }
 
 
