@@ -49,6 +49,7 @@ fun Threaditems(thread: ThreadModel, user: UserModel) {
 
   val userid=SharedPref.getusername(LocalContext.current)
     val context = LocalContext.current
+
         Log.d("Threaditems","${thread.thread} and $userid")
     Column {
         ConstraintLayout(

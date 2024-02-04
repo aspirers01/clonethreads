@@ -49,8 +49,9 @@ fun Profile(navController: NavHostController){
     val viewmodel= AuthViewmodel()
 
     val profilemodel= ProfileViewModel()
+    val uid= SharedPref.getusername(LocalContext.current)
     val threads by profilemodel.threads.observeAsState()
-    profilemodel.getThreads()
+    profilemodel.getThreads(uid)
 val context= LocalContext.current
     val firebaseUser by viewmodel.firebaseUser.observeAsState(null)
     LaunchedEffect(firebaseUser) {
@@ -91,7 +92,7 @@ val context= LocalContext.current
                             })
 
                         Text(
-                            text = "Username",
+                            text = SharedPref.getname(context),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.ExtraBold),
                             modifier = Modifier.constrainAs(username) {
                                 top.linkTo(profiletext.bottom, margin = 16.dp)
