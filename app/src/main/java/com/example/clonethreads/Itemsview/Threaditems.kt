@@ -45,7 +45,7 @@ import com.example.clonethreads.utils.SharedPref
 
 
 @Composable
-fun Threaditems(thread: ThreadModel, user: UserModel, navHostController: NavHostController) {
+fun Threaditems(thread: ThreadModel, user: UserModel) {
 
   val userid=SharedPref.getusername(LocalContext.current)
     val context = LocalContext.current

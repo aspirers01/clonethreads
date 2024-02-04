@@ -22,7 +22,7 @@ fun Home(navHostController: NavHostController) {
     LazyColumn {
         items(threadandusers?: emptyList() ){pairs->
 
-            Threaditems(thread=pairs.first, user = pairs.second, navHostController)
+            Threaditems(thread=pairs.first, user = pairs.second)
 
 
         }
