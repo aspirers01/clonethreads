@@ -15,6 +15,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import java.util.UUID
@@ -148,6 +149,18 @@ class AuthViewmodel : ViewModel() {
         s: String,
         context: Context
     ) {
+
+        val firestoreDb=Firebase.firestore
+        val followersref=firestoreDb.collection("followers").document(uid)
+        val followingref=firestoreDb.collection("following").document(uid)
+
+    followingref.set(mapOf("followingIds" to listOf<String>()))
+        followersref.set(mapOf("followersIds" to listOf<String>()))
+
+
+
+
+
         val user = UserModel(username, email, password, toString, uid, s)
         userref.child(uid).setValue(user).addOnCompleteListener {
             if (it.isSuccessful) {

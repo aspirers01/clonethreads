@@ -9,6 +9,8 @@ import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.firestore
 
 class ProfileViewModel {
 
@@ -19,6 +21,11 @@ class ProfileViewModel {
     val threads: LiveData<List<ThreadModel>> = _threads
       private val _user= MutableLiveData(UserModel())
     val user: LiveData<UserModel> = _user
+    private val _followerlist= MutableLiveData(listOf<String>())
+    val followerlist: LiveData<List<String>> = _followerlist
+
+    private val _followinglist= MutableLiveData(listOf<String>())
+    val followinglist: LiveData<List<String>> = _followinglist
 
 
 
@@ -62,6 +69,36 @@ class ProfileViewModel {
             }
 
     })
+    }
+
+    // get instance of firestore
+    val firestoredb=Firebase.firestore
+    fun getfollower(uid:String){
+        firestoredb.collection("followers").document(uid).addSnapshotListener { value, error ->
+            if (error!=null){
+                return@addSnapshotListener
+            }
+            val followerlist= value?.get("followersIds") as? List<String> ?: listOf()
+            _followerlist.postValue(followerlist)
+        }
+
+    }
+    fun getfollowing(uid:String){
+        firestoredb.collection("following").document(uid).addSnapshotListener { value, error ->
+            if (error!=null){
+                return@addSnapshotListener
+            }
+            val followinglist= value?.get("followingIds") as? List<String> ?: listOf()
+            _followinglist.postValue(followinglist)
+        }
+
+    }
+
+    fun startfollow(uidofuser:String,currentuser:String){
+        val ref=firestoredb.collection("following").document(currentuser)
+        val followerref=firestoredb.collection("followers").document(uidofuser)
+        ref.update("followingIds",FieldValue.arrayUnion(uidofuser))
+        followerref.update("followersIds",FieldValue.arrayUnion(currentuser))
     }
 
 

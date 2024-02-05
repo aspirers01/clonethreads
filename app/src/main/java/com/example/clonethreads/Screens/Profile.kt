@@ -51,6 +51,12 @@ fun Profile(navController: NavHostController){
     val profilemodel= ProfileViewModel()
     val uid= SharedPref.getusername(LocalContext.current)
     val threads by profilemodel.threads.observeAsState()
+
+    val followerslist by profilemodel.followerlist.observeAsState()
+    val followinglist by profilemodel.followinglist.observeAsState()
+
+    profilemodel.getfollower(uid)
+    profilemodel.getfollowing(uid)
     profilemodel.getThreads(uid)
 val context= LocalContext.current
     val firebaseUser by viewmodel.firebaseUser.observeAsState(null)
@@ -121,14 +127,14 @@ val context= LocalContext.current
                                 start.linkTo(parent.start)
                             })
                         Text(
-                            text = "followers",
+                            text = " ${followerslist?.size} followers",
                             style = TextStyle(fontSize = 16.sp),
                             modifier = Modifier.constrainAs(followers) {
                                 top.linkTo(userbio.bottom, 12.dp)
                                 start.linkTo(parent.start)
                             })
                         Text(
-                            text = "following",
+                            text = " ${followinglist?.size} following",
                             style = TextStyle(fontSize = 16.sp),
                             modifier = Modifier.constrainAs(following) {
                                 top.linkTo(followers.bottom)
