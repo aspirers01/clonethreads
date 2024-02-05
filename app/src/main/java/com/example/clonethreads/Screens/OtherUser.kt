@@ -45,7 +45,15 @@ fun OtherUser(navController: NavHostController,data:String){
     profilemodel.getThreads(data)
     val context= LocalContext.current
        val user by profilemodel.user.observeAsState()
+
+    val followerslist by profilemodel.followerlist.observeAsState()
+    val followinglist by profilemodel.followinglist.observeAsState()
+
     profilemodel.getuser(data)
+    profilemodel.getfollower(data)
+    profilemodel.getfollowing(data)
+   val  currentuser= SharedPref.getusername(context)
+
 
 
 
@@ -99,19 +107,33 @@ fun OtherUser(navController: NavHostController,data:String){
                         start.linkTo(parent.start)
                     })
                 Text(
-                    text = "followers",
+                    text = "${followerslist?.size} followers",
                     style = TextStyle(fontSize = 16.sp),
                     modifier = Modifier.constrainAs(followers) {
                         top.linkTo(userbio.bottom, 12.dp)
                         start.linkTo(parent.start)
                     })
                 Text(
-                    text = "following",
+                    text = "${followinglist?.size} following",
                     style = TextStyle(fontSize = 16.sp),
                     modifier = Modifier.constrainAs(following) {
                         top.linkTo(followers.bottom)
                         start.linkTo(parent.start)
                     })
+                Box(modifier = Modifier
+                    .background(Color.Transparent)
+                    .constrainAs(logout) {
+                        top.linkTo(following.bottom, 12.dp)
+                        start.linkTo(parent.start)
+
+                    }) {
+                    Button(
+                        onClick = {    profilemodel.startfollow(data,currentuser!!) },
+                        modifier = Modifier.align(Alignment.Center)
+                    ) {
+                        Text(text =  if(followerslist!=null && followerslist!!.isNotEmpty() && followerslist!!.contains(currentuser)) "following" else "Follow")
+                    }
+                }
 
 
             }

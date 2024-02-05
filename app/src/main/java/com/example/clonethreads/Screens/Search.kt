@@ -32,8 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.clonethreads.Itemsview.Threaditems
 import com.example.clonethreads.Itemsview.UserItems
+import com.example.clonethreads.Models.UserModel
 import com.example.clonethreads.Viewmodel.HomeViewModel
 import com.example.clonethreads.Viewmodel.SearchViewModel
+import com.example.clonethreads.utils.SharedPref
 
 @Composable
 fun Search(navHostController: NavHostController) {
@@ -45,6 +47,7 @@ var searchtext by remember {
 
     val searchviewmodel = SearchViewModel()
     val userlist by searchviewmodel.searchresult.observeAsState(null)
+
 
     Column {
         Text(

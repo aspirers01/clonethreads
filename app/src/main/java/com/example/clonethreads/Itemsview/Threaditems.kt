@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,7 +51,6 @@ fun Threaditems(thread: ThreadModel, user: UserModel) {
   val userid=SharedPref.getusername(LocalContext.current)
     val context = LocalContext.current
 
-        Log.d("Threaditems","${thread.thread} and $userid")
     Column {
         ConstraintLayout(
             modifier = Modifier
@@ -96,7 +96,7 @@ fun Threaditems(thread: ThreadModel, user: UserModel) {
                     top.linkTo(title.bottom,4.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }) {
+                }.background(Color.Transparent)) {
 
                     Image(
                         painter = rememberAsyncImagePainter(model = thread.image),
