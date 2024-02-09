@@ -42,6 +42,7 @@ class AuthViewmodel : ViewModel() {
     }
 
     fun login(email: String, password: String, context: Context) {
+        _isloading.value = true
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
                 _firebaseUser.postValue(auth.currentUser)
@@ -49,6 +50,7 @@ class AuthViewmodel : ViewModel() {
 
             } else {
                 _error.value = it.exception?.message
+                _isloading.value=false
             }
         }
     }
@@ -69,6 +71,7 @@ class AuthViewmodel : ViewModel() {
             }
 
             override fun onCancelled(error: com.google.firebase.database.DatabaseError) {
+                _isloading.value=false
                 Toast.makeText(context, "something went wrong", Toast.LENGTH_SHORT).show()
             }
 
@@ -90,7 +93,7 @@ class AuthViewmodel : ViewModel() {
         imageUri: Uri,
         context: Context
     ) {
-        _isloading.value = true;
+
         if (password != cnpassword) {
             _error.value = "passwords do not match"
             _isloading.value = false;
@@ -168,7 +171,7 @@ class AuthViewmodel : ViewModel() {
                 _firebaseUser.postValue(auth.currentUser)
                 Log.d("register", "${_firebaseUser.value}")
                 SharedPref.storedata(username, email, uid, toString, s, context)
-                //_isloading.postValue(false)
+                _isloading.value=false
             } else {
                 _error.value = it.exception?.message
                 _isloading.value = false;

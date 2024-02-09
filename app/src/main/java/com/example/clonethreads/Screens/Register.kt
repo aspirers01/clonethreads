@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
@@ -71,12 +72,10 @@ import com.example.clonethreads.R
 import com.example.clonethreads.Viewmodel.AuthViewmodel
 
 @Composable
-fun Register(navController: NavHostController) {
+fun Register(navController: NavHostController,viewmodel: AuthViewmodel = viewModel()){
 
-    // creating viewmodel for register
-    val viewmodel = AuthViewmodel()
     val firebaseUser by viewmodel.firebaseUser.observeAsState(null)
-    val isloading by viewmodel.isloading.observeAsState(false)
+   val isloading by viewmodel.isloading.observeAsState(false)
     val error by viewmodel.error.observeAsState(null)
     var username: String by remember {
         mutableStateOf("")
@@ -94,7 +93,12 @@ fun Register(navController: NavHostController) {
         mutableStateOf<Uri?>(null)
     }
 
-
+    if(isloading){
+        Box(modifier=Modifier.size(50.dp), contentAlignment = Alignment.Center)
+        {
+            CircularProgressIndicator()
+        }
+    }
     val context = LocalContext.current
     val photopicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),

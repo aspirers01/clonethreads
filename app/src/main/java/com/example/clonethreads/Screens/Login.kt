@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -39,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.clonethreads.Navigation.Routes
@@ -47,10 +50,10 @@ import com.example.clonethreads.Viewmodel.AuthViewmodel
 
 
 @Composable
-fun Login( navController: NavHostController) {
+fun Login( navController: NavHostController,viewmodel: AuthViewmodel = viewModel()){
 
 // creating viewmodel for register
-    val viewmodel = AuthViewmodel()
+
     val firebaseUser by viewmodel.firebaseUser.observeAsState(null)
     val error by viewmodel.error.observeAsState(null)
     var email: String by remember {
@@ -60,6 +63,7 @@ fun Login( navController: NavHostController) {
     var password: String by remember {
         mutableStateOf("")
     }
+    val isloading by viewmodel.isloading.observeAsState(false)
 
     LaunchedEffect(error ){
         if(error!=null)
@@ -74,6 +78,12 @@ fun Login( navController: NavHostController) {
                 popUpTo(navController.graph.findStartDestination().id)
                 launchSingleTop = true
             }
+        }
+    }
+    if(isloading){
+        Box(modifier=Modifier.size(50.dp), contentAlignment = Alignment.Center)
+        {
+           CircularProgressIndicator()
         }
     }
     Column(

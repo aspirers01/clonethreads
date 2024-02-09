@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -42,7 +43,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.clonethreads.Navigation.Routes
@@ -55,10 +58,11 @@ import com.google.firebase.auth.auth
 
 
 @Composable
-fun AddThreads(navController: NavHostController) {
+fun AddThreads(navController: NavHostController,threadModel:AddThreadViewModel= viewModel()) {
     
-      val threadModel= AddThreadViewModel()
+
     val isposted by threadModel.isposted.observeAsState(false)
+    val isloading by threadModel.isloading.observeAsState(false)
 
     var thread: String by remember {
         mutableStateOf("")
@@ -90,12 +94,13 @@ fun AddThreads(navController: NavHostController) {
         }
     }
 
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        val (crossPic, text, logo, userName, editText, attachMedia, replyText, button, imageBox) = createRefs()
+        val (crossPic, text, logo, userName, editText, attachMedia, replyText, button, loading) = createRefs()
 
         Image(painter = painterResource(id = R.drawable.baseline_close_24),
             contentDescription = "cross",
@@ -139,6 +144,18 @@ fun AddThreads(navController: NavHostController) {
                 .size(80.dp)
                 .clip(shape = CircleShape), contentScale = ContentScale.Crop
         )
+        if(isloading){
+            Box(modifier=Modifier.size(50.dp).constrainAs(loading){
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom)
+
+            }.zIndex(2.0F), contentAlignment = Alignment.Center)
+            {
+                CircularProgressIndicator()
+            }
+        }
         Text(text = SharedPref.getname(context),
             style = TextStyle(fontSize = 24.sp),
             modifier = Modifier
@@ -227,8 +244,15 @@ fun AddThreads(navController: NavHostController) {
 
         TextButton(onClick = {
             if(imageUri==null) {
+                if(thread.isEmpty()){
+                    Toast.makeText(context, "please enter thread", Toast.LENGTH_SHORT).show()
+                }else
                 threadModel.savedata(thread,FirebaseAuth.getInstance().currentUser?.uid!!, "")
-            }else{
+            }
+            else{
+                if(thread.isEmpty()){
+                    Toast.makeText(context, "please enter thread", Toast.LENGTH_SHORT).show()
+                }else
                 threadModel.saveimage(thread, FirebaseAuth.getInstance().currentUser?.uid!!, imageUri!!)
             }
 

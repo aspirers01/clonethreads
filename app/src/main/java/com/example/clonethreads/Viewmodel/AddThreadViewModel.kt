@@ -21,7 +21,8 @@ class AddThreadViewModel:ViewModel(){
 
     val db = FirebaseDatabase.getInstance()
     val userref = db.getReference("threads")
-
+private  val _isloading=MutableLiveData<Boolean>(false)
+    val isloading:LiveData<Boolean> = _isloading
 
 
     private val _isposted = MutableLiveData<Boolean>()
@@ -37,7 +38,7 @@ class AddThreadViewModel:ViewModel(){
         imageUri: Uri
     ) {
 
-
+     _isloading.value=true;
         val uploadTask = imageRef.putFile(imageUri)
         uploadTask.addOnSuccessListener {
             imageRef.downloadUrl.addOnSuccessListener {
@@ -48,12 +49,14 @@ class AddThreadViewModel:ViewModel(){
     }
 
 fun savedata(thread: String, uid: String, toString: String){
-        val threadmodel = ThreadModel(thread, uid, toString, System.currentTimeMillis().toString())
+   _isloading.value=true;
+        val   threadmodel = ThreadModel(thread, uid, toString, System.currentTimeMillis().toString())
         userref.child(userref.push().key!!).setValue(threadmodel).addOnCompleteListener {
             if (it.isSuccessful) {
                 _isposted.postValue(true)
             } else {
                 _isposted.postValue(false)
+                _isloading.value=false
             }
         }
     }
