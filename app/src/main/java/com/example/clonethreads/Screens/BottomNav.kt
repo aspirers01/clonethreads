@@ -1,9 +1,11 @@
 package com.example.clonethreads.Screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.MailOutline
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
@@ -41,17 +43,18 @@ fun BottomNav(navController: NavHostController){
              composable(Routes.Profile.routes) {
                  Profile(navController)
              }
-             composable(Routes.Notifications.routes) {
-                 Notification()
+             composable(Routes.Chats.routes) {
+                 Chats()
              }
              composable(Routes.AddThreads.routes) {
-                 AddThreads(navController1)
+                 AddThreads(navController)
              }
 
          }
 
     }
 }
+
 
 @Composable
 fun MyAppbar(navController: NavHostController) {
@@ -70,9 +73,9 @@ fun MyAppbar(navController: NavHostController) {
             route = Routes.AddThreads.routes,
             icon = Icons.Rounded.Add
         ),Bottomnavitems(
-            title = "Notification",
-            route = Routes.Notifications.routes,
-            icon = Icons.Rounded.Notifications
+            title = "Chats",
+            route = Routes.Chats.routes,
+            icon = Icons.Rounded.MailOutline
         ),Bottomnavitems(
             title = "Profile",
             route = Routes.Profile.routes,
@@ -82,7 +85,7 @@ fun MyAppbar(navController: NavHostController) {
     BottomAppBar {
          list.forEach { item ->
              val selected = item.route == backStackEntry.value?.destination?.route
-                NavigationBarItem( selected = selected, onClick = {
+             NavigationBarItem( selected = selected, onClick = {
                     navController.navigate(item.route){
                        popUpTo(navController.graph.findStartDestination().id){
                            saveState = true

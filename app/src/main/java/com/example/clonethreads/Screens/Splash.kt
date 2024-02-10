@@ -45,13 +45,15 @@ fun Splash( navController: NavHostController
                  delay(2500)
                   if(auth.currentUser == null){
                         navController.navigate(Routes.Login.routes){
-                            popUpTo(navController.graph.findStartDestination().id)
-                            launchSingleTop = true
+                            popUpTo(Routes.Splash.routes){
+                                inclusive = true
+                            }
                         }
                   }else{
-                      navController.navigate(Routes.BottomNav.routes){
-                          popUpTo(navController.graph.findStartDestination().id)
-                          launchSingleTop = true
+                      navController.navigate(Routes.BottomNav.routes) {
+                          popUpTo(Routes.Splash.routes){
+                              inclusive = true
+                          }
                       }
                   }
 

@@ -111,12 +111,12 @@ fun AddThreads(navController: NavHostController,threadModel:AddThreadViewModel= 
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                 }.clickable {
-                    navController.navigate(Routes.Home.routes) {
-                        popUpTo(Routes.AddThreads.routes) {
+                    navController.navigate(Routes.BottomNav.routes) {
+                        popUpTo(Routes.Splash.routes){
                             inclusive = true
                         }
-                        launchSingleTop = true
                     }
+
                 }
 
         )

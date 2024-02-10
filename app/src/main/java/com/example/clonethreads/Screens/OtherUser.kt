@@ -2,6 +2,7 @@ package com.example.clonethreads.Screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,6 +37,7 @@ import com.example.clonethreads.Navigation.Routes
 import com.example.clonethreads.Viewmodel.AuthViewmodel
 import com.example.clonethreads.Viewmodel.ProfileViewModel
 import com.example.clonethreads.utils.SharedPref
+import com.google.android.gms.auth.api.phone.R
 
 @Composable
 fun OtherUser(navController: NavHostController,data:String){
@@ -66,7 +69,25 @@ fun OtherUser(navController: NavHostController,data:String){
                     .padding(16.dp)
             )
             {
-                val (profiletext, profileimage, username, userbio, followers, following, logout) = createRefs()
+                val (profiletext, profileimage, username, userbio, followers, following, logout,backbtn) = createRefs()
+                Image(painter = painterResource(id = com.example.clonethreads.R.drawable.baseline_close_24),
+                    contentDescription = "cross",
+
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .constrainAs(backbtn) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                        }.clickable {
+                            navController.navigate(Routes.BottomNav.routes) {
+                                popUpTo(Routes.Splash.routes){
+                                    inclusive = true
+                                }
+                            }
+                        }
+
+                )
+
 
                 Text(
                     text = "Profile",

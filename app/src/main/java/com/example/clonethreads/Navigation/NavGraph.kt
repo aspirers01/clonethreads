@@ -6,9 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.clonethreads.Screens.AddThreads
 import com.example.clonethreads.Screens.BottomNav
+import com.example.clonethreads.Screens.Chats
 import com.example.clonethreads.Screens.Home
 import com.example.clonethreads.Screens.Login
-import com.example.clonethreads.Screens.Notification
 import com.example.clonethreads.Screens.OtherUser
 import com.example.clonethreads.Screens.Profile
 import com.example.clonethreads.Screens.Register
@@ -33,8 +33,8 @@ fun NavGraph(navHostController: NavHostController
         composable(Routes.Profile.routes) {
            Profile(navHostController)
         }
-        composable(Routes.Notifications.routes) {
-            Notification()
+        composable(Routes.Chats.routes) {
+            Chats()
         }
         composable(Routes.AddThreads.routes) {
             AddThreads(navHostController)
