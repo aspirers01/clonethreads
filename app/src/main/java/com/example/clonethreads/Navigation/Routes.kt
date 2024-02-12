@@ -20,6 +20,7 @@ sealed class Routes(val routes: String) {
     object Register : Routes("register")
 
    object OtherUser : Routes("otheruser/{data}")
+    object Tabbar : Routes("tabbar")
 
 
 }

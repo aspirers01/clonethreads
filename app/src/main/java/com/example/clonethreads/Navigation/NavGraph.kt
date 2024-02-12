@@ -14,6 +14,7 @@ import com.example.clonethreads.Screens.Profile
 import com.example.clonethreads.Screens.Register
 import com.example.clonethreads.Screens.Search
 import com.example.clonethreads.Screens.Splash
+import com.example.clonethreads.Screens.Tabbar
 
 
 @Composable
@@ -34,7 +35,7 @@ fun NavGraph(navHostController: NavHostController
            Profile(navHostController)
         }
         composable(Routes.Chats.routes) {
-            Chats()
+            Chats(navHostController)
         }
         composable(Routes.AddThreads.routes) {
             AddThreads(navHostController)
@@ -51,6 +52,9 @@ fun NavGraph(navHostController: NavHostController
         composable(Routes.OtherUser.routes){
             val data=it.arguments?.getString("data")
             OtherUser(navHostController,data!!)
+        }
+        composable(Routes.Tabbar.routes){
+            Tabbar(navHostController)
         }
     }
 }
