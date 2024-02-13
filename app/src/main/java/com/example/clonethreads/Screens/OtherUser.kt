@@ -149,7 +149,7 @@ fun OtherUser(navController: NavHostController,data:String){
 
                     }) {
                     Button(
-                        onClick = {    profilemodel.startfollow(data,currentuser!!) },
+                        onClick = {    profilemodel.startfollow(data,currentuser!!,context) },
                         modifier = Modifier.align(Alignment.Center)
                     ) {
                         Text(text =  if(followerslist!=null && followerslist!!.isNotEmpty() && followerslist!!.contains(currentuser)) "following" else "Follow")

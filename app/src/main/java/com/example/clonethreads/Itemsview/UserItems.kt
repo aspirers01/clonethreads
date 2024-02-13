@@ -41,6 +41,7 @@ fun UserItems(
                 .padding(16.dp).clickable {
 
                   val routes=  Routes.OtherUser.routes.replace("{data}",User.uid)
+
                     navHostController.navigate(routes)
                 }
         ) {

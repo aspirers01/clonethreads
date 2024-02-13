@@ -1,16 +1,23 @@
 package com.example.clonethreads.Viewmodel
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.clonethreads.Models.ChatData
+import com.example.clonethreads.Models.ChatUser
 import com.example.clonethreads.Models.ThreadModel
+import com.example.clonethreads.Models.UserData
 import com.example.clonethreads.Models.UserModel
+import com.example.clonethreads.utils.SharedPref
 import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObjects
 
 class ProfileViewModel {
 
@@ -94,14 +101,48 @@ class ProfileViewModel {
 
     }
 
-    fun startfollow(uidofuser:String,currentuser:String){
-        val ref=firestoredb.collection("following").document(currentuser)
-        val followerref=firestoredb.collection("followers").document(uidofuser)
-        ref.update("followingIds",FieldValue.arrayUnion(uidofuser))
-        followerref.update("followersIds",FieldValue.arrayUnion(currentuser))
-        firestoredb.collection("chats")
+    fun startfollow(uidofuser:String,currentuser:String,context: Context) {
+        val fbdb=Firebase.firestore
+        val ref = firestoredb.collection("following").document(currentuser)
+        val followerref = firestoredb.collection("followers").document(uidofuser)
+        ref.update("followingIds", FieldValue.arrayUnion(uidofuser))
+        followerref.update("followersIds", FieldValue.arrayUnion(currentuser))
+
+
+        fbdb.collection("chats").where(
+            Filter.or(
+                Filter.and(
+                    Filter.equalTo("user1.userId", currentuser),
+                    Filter.equalTo("user2.userId", uidofuser)
+                ),
+                Filter.and(
+                    Filter.equalTo("user2.userId", uidofuser),
+                    Filter.equalTo("user1.userId", currentuser)
+                )
+            )
+        ).get().addOnSuccessListener {
+            if (it.isEmpty) {
+                fbdb.collection("users").whereEqualTo("userId", uidofuser).get()
+                    .addOnSuccessListener { it ->
+                        if (it.isEmpty) {
+                         Log.d("chat","no user found")
+                        }else{
+                          val chatparter=it.toObjects<UserData>()[0]
+                            val id=fbdb.collection("chats").document().id
+                            val chat = ChatData(
+                                chatId = id,
+                                user1 = ChatUser(userId = currentuser, name =SharedPref.getname(context) , imageUrl = SharedPref.getimage(context)),
+                                user2 = ChatUser(userId = uidofuser, name = chatparter.name, imageUrl = chatparter.imageUrl)
+                            )
+                            fbdb.collection("chats").document(id).set(chat)
+
+                        }
+
+                    }.addOnFailureListener(){
+                        Log.d("chat","error in getting user")
+                    }
+            }
+        }
     }
-
-
 
 }

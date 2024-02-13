@@ -13,6 +13,8 @@ import com.example.clonethreads.Screens.OtherUser
 import com.example.clonethreads.Screens.Profile
 import com.example.clonethreads.Screens.Register
 import com.example.clonethreads.Screens.Search
+import com.example.clonethreads.Screens.SingleChatScreen
+
 import com.example.clonethreads.Screens.Splash
 import com.example.clonethreads.Screens.Tabbar
 
@@ -35,7 +37,7 @@ fun NavGraph(navHostController: NavHostController
            Profile(navHostController)
         }
         composable(Routes.Chats.routes) {
-            Chats()
+            Chats(navHostController)
         }
         composable(Routes.AddThreads.routes) {
             AddThreads(navHostController)
@@ -55,6 +57,10 @@ fun NavGraph(navHostController: NavHostController
         }
         composable(Routes.Tabbar.routes){
             Tabbar(navHostController)
+        }
+        composable(Routes.SingleChatScreen.routes){
+            val data=it.arguments?.getString("data")
+            SingleChatScreen(navHostController,data!!)
         }
     }
 }

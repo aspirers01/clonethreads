@@ -23,4 +23,8 @@ sealed class Routes(val routes: String) {
     object Tabbar : Routes("tabbar")
 
 
+    object SingleChatScreen : Routes("singlechatscreen/{data}")
+
+
+
 }
