@@ -99,6 +99,7 @@ class ProfileViewModel {
         val followerref=firestoredb.collection("followers").document(uidofuser)
         ref.update("followingIds",FieldValue.arrayUnion(uidofuser))
         followerref.update("followersIds",FieldValue.arrayUnion(currentuser))
+        firestoredb.collection("chats")
     }
 
 

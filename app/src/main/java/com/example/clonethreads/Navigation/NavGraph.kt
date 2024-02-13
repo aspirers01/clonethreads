@@ -35,7 +35,7 @@ fun NavGraph(navHostController: NavHostController
            Profile(navHostController)
         }
         composable(Routes.Chats.routes) {
-            Chats(navHostController)
+            Chats()
         }
         composable(Routes.AddThreads.routes) {
             AddThreads(navHostController)

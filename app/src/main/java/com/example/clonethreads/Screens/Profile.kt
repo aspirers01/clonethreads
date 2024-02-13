@@ -1,5 +1,6 @@
 package com.example.clonethreads.Screens
 
+import android.app.AlertDialog
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,12 +14,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -44,9 +51,10 @@ import com.example.clonethreads.Viewmodel.ProfileViewModel
 import com.example.clonethreads.utils.SharedPref
 
 
+
 @Composable
-fun Profile(navController: NavHostController){
-    val viewmodel= AuthViewmodel()
+fun Profile(navController: NavHostController,viewmodel: AuthViewmodel = viewModel()){
+
 
     val profilemodel= ProfileViewModel()
     val uid= SharedPref.getusername(LocalContext.current)
@@ -70,14 +78,23 @@ val context= LocalContext.current
 
         }
     }
-   
 
+    val openDialog = remember { mutableStateOf(false) }
 
         val user = UserModel(
             username = SharedPref.getname(context),
             image = SharedPref.getimage(context)
         )
-
+     if(openDialog.value){
+         alertdialog(
+             onDismiss = { // write code for dissmiss dialog
+                 openDialog.value = false
+             },
+             onConfirm = { viewmodel.signout() },
+             title ="log out" ,
+             message ="are you sure you want to log out?"
+         )
+     }
             LazyColumn {
                 item{
                     ConstraintLayout(
@@ -149,7 +166,10 @@ val context= LocalContext.current
 
                             }) {
                             Button(
-                                onClick = { viewmodel.signout() },
+                                onClick = {
+                                    openDialog.value = true
+
+                                    },
                                 modifier = Modifier.align(Alignment.Center)
                             ) {
                                 Text(text = "log out")
@@ -165,4 +185,37 @@ val context= LocalContext.current
 
 
     }
+
+@Composable
+fun alertdialog(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+    title: String,
+    message: String
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = title) },
+        text = { Text(text = message) },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirm()
+                    onDismiss()
+                }
+            ) {
+                Text(text = "Confirm")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = onDismiss
+            ) {
+                Text(text = "Dismiss")
+            }
+        }
+    )
+}
+
+
 
