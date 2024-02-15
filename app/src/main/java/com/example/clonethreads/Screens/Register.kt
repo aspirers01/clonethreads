@@ -55,6 +55,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -110,9 +111,12 @@ fun Register(navController: NavHostController,viewmodel: AuthViewmodel = viewMod
     )
 
     LaunchedEffect(error) {
-        if (error != null)
+        if (error != null) {
             Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
+
+        }
     }
+
 
     LaunchedEffect(firebaseUser) {
         Log.d("register", "launched effect")
@@ -190,6 +194,7 @@ fun Register(navController: NavHostController,viewmodel: AuthViewmodel = viewMod
             value = confirmpassword,
             onValueChange = { confirmpassword = it },
             label = { Text("confirm password") },
+            visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             singleLine = true,
             modifier = Modifier

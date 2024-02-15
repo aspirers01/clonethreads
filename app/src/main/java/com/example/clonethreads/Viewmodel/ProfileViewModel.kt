@@ -124,10 +124,11 @@ class ProfileViewModel {
             if (it.isEmpty) {
                 fbdb.collection("users").whereEqualTo("userId", uidofuser).get()
                     .addOnSuccessListener { it ->
+                        Log.d("chatit","${it.toObjects(UserData::class.java)}")
                         if (it.isEmpty) {
                          Log.d("chat","no user found")
                         }else{
-                          val chatparter=it.toObjects<UserData>()[0]
+                          val chatparter=it.toObjects(UserData::class.java)[0]
                             val id=fbdb.collection("chats").document().id
                             val chat = ChatData(
                                 chatId = id,

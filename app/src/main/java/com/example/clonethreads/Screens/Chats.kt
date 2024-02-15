@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.clonethreads.Models.UserModel
 import com.example.clonethreads.Navigation.Routes
@@ -107,7 +108,7 @@ fun CommonImage(
     modifier: Modifier = Modifier.wrapContentSize(),
     contentScale: ContentScale = ContentScale.Crop,
 ) {
-    val painter = rememberImagePainter(data = data)
+    val painter = rememberAsyncImagePainter( data)
     Image(
         painter = painter,
         contentDescription = null,

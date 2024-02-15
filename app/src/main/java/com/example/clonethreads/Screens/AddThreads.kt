@@ -86,10 +86,10 @@ fun AddThreads(navController: NavHostController,threadModel:AddThreadViewModel= 
             imageUri=null
             Toast.makeText(context, "thread posted succesfully", Toast.LENGTH_SHORT).show()
       navController.navigate(Routes.Home.routes){
-            popUpTo(Routes.AddThreads.routes){
-                inclusive=true
-            }
-          launchSingleTop=true
+          popUpTo(Routes.AddThreads.routes){
+          inclusive = true
+      }
+
         }
         }
     }

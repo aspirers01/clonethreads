@@ -95,7 +95,7 @@ class AuthViewmodel : ViewModel() {
         imageUri: Uri,
         context: Context
     ) {
-
+        _isloading.value = true
         if (password != cnpassword) {
             _error.value = "passwords do not match"
             _isloading.value = false;
@@ -165,8 +165,7 @@ class AuthViewmodel : ViewModel() {
         val firestoreDb=Firebase.firestore
         val followersref=firestoreDb.collection("followers").document(uid)
         val followingref=firestoreDb.collection("following").document(uid)
-        val userreffire=firestoreDb.collection("users").document(uid).set(userdatafirestore)
-
+        firestoreDb.collection("users").document(uid).set(userdatafirestore)
 
     followingref.set(mapOf("followingIds" to listOf<String>()))
         followersref.set(mapOf("followersIds" to listOf<String>()))
